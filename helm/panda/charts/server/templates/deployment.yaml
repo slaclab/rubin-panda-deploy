@@ -114,17 +114,17 @@ spec:
             - secretRef:
                 name: {{ .Values.secret.name }}-envs
             {{- else }}
-             - configMapRef:
-                 {{- if .Values.database.config_ref }}
-                 name: {{ .Values.database.config_ref }}
-                 {{- else }}
-                 name: {{ .Release.Name }}-postgres-configmap
-                 {{- end }}
+            - configMapRef:
+                {{- if .Values.database.config_ref }}
+                name: {{ .Values.database.config_ref }}
+                {{- else }}
+                name: {{ .Release.Name }}-postgres-configmap
+                {{- end }}
             {{- end }}
-             - configMapRef:
-                 name: {{ .Release.Name }}-external-env
-             - configMapRef:
-                 name: {{ include "server.fullname" . }}-env
+            - configMapRef:
+                name: {{ .Release.Name }}-external-env
+            - configMapRef:
+                name: {{ include "server.fullname" . }}-env
           env:
             - name: PANDA_SERVER_CONF_SERVERNAME
               value: {{ include "server.fullname" . }}
