@@ -13,15 +13,12 @@ image:
 # start the service when pod gets started
 autoStart: true
 
-# run with non-root pid
-noRoot: false
-
 iddsServer: localhost
 
 persistentvolume:
   create: true
   class: manual
-  path: "/mnt/idds-rest-logs"
+  path: "/mnt/idds-main-logs"
   size: 5Gi
 
 panda:
@@ -33,6 +30,10 @@ panda:
   panda_config_root: "/opt/idds/config/"
   pandacache_url: "https://panda-dev-server:443/server/panda"
   panda_verify_host: "off"
+
+secret:
+  enabled: false
+  name: ""
 
 hostcerts:
   enabled: false

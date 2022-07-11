@@ -76,16 +76,17 @@ spec:
               containerPort: 5432
               protocol: TCP
           envFrom:
+            {{- if .Values.secret.enabled }}
+            - secretRef:
+                name: {{ .Values.secret.name }}-envs
+            {{- else }}
             - configMapRef:
                 name: {{ include "postgres.fullname" . }}-configmap
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            {{- if .Values.noRoot }}
-            - mountPath: /tmp/pg_volume
-            {{- else }}
             - mountPath: /var/lib/postgresql/data
-            {{- end }}
               name: {{ include "postgres.fullname" . }}-data
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -16,14 +16,15 @@ persistentvolume:
   path: "/mnt/idds-database"
   size: 5Gi
 
+secret:
+  enabled: false
+  name: ""
+
 database:
   name: postgresdb
   user: admin
   password: MyPandaPass0508
   schema: public
-
-# run with non-root account
-noRoot: false
 
 imagePullSecrets: []
 nameOverride: ""

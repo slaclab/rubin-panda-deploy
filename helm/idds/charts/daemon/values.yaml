@@ -10,9 +10,6 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "0.10.18"
 
-# run with non-root account
-noRoot: false
-
 # start the service when pod gets started
 autoStart: true
 
@@ -36,6 +33,10 @@ panda:
 
 hostcerts:
   enabled: false
+
+secret:
+  enabled: false
+  name: ""
 
 database:
   name: postgresdb
