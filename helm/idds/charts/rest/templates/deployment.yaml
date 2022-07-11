@@ -58,7 +58,7 @@ spec:
       labels:
         {{- include "rest.selectorLabels" . | nindent 8 }}
     spec:
-      hostname:  {{ include "rest.fullname" . }}-local
+      hostname:  {{ .Release.Name}}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -76,16 +76,11 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - sleep 30;
-              {{- if .Values.noRoot }}
-              /opt/idds/bin/start-daemon.sh rest
-              {{- else }}
-              chmod 777 /var/log/idds;
-              runuser -u atlpan -g zp -- /opt/idds/bin/start-daemon.sh rest
-              {{- end}}
+              start-daemon.sh rest
           {{ end -}}
           ports:
             - name: https
-              containerPort: 8443
+              containerPort: 443
               protocol: TCP
           envFrom:
             - configMapRef:
@@ -118,10 +113,21 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "rest.fullname" . }}
         - name: {{ include "rest.fullname" . }}-configmap
+          {{- if .Values.secret.enabled }}
+          secret:
+              secretName: {{ .Values.secret.name }}-configmap
+          {{- else }}
           configMap:
               name: {{ include "rest.fullname" . }}-configmap
+          {{- end }}
+        {{- if .Values.secret.enabled }}
+        - name: {{ include "rest.fullname" . }}-certs
+          secret:
+              secretName: {{ .Values.secret.name }}-certs
+        {{- else }}
         {{- if .Values.hostcerts.enabled -}}
         - name: {{ include "rest.fullname" . }}-certs
           configMap:
               name: {{ include "rest.fullname" . }}-certs
+        {{- end }}
         {{- end }}

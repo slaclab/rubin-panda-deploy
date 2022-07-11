@@ -92,6 +92,9 @@ data:
         }
     }
 
+  idds2panda_token: |-
+{{ .Files.Get "idds2panda_token" | indent 8}}
+
   idds_configmap_back.json: |-
 {{ .Files.Get "idds_configmap.json" | indent 8}}
 
@@ -107,7 +110,7 @@ data:
   {{- if .Values.noProxy }}
   no_proxy: "{{ .Values.noProxy }}"
   {{- else}}
-  no_proxy: "localhost,{{ include "rest.fullname" . }}"
+  no_proxy: "localhost,{{ include "rest.fullname" . }},{{ .Release.Name }}-daemon,{{ .Release.Name }}-postgres"
   {{- end}}
   {{- if .Values.httpsProxy }}
   https_proxy: "{{ .Values.httpProxy }}"
@@ -117,7 +120,7 @@ data:
   {{- if .Values.noProxy }}
   no_proxy: "{{ .Values.noProxy }}"
   {{- else}}
-  no_proxy: "localhost,{{ include "rest.fullname" . }}"
+  no_proxy: "localhost,{{ include "rest.fullname" . }},{{ .Release.Name }}-daemon,{{ .Release.Name }}-postgres"
   {{- end}}
   {{- end }}
 
