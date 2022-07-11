@@ -10,6 +10,11 @@ daemon:
     class: wekafs--sdf-k8s01
     create: false
 
+  # use secret
+  secret:
+    enabled: false
+    name: idds-dev-secret
+
   httpProxy: "http://squid.slac.stanford.edu:3128"
   httpsProxy: "http://squid.slac.stanford.edu:3128"
   noProxy: "localhost,idds-dev-rest,idds-dev-daemon,panda-dev-server,panda-dev-jedi"
@@ -30,7 +35,7 @@ rest:
 
   # use secret
   secret:
-    enabled: true
+    enabled: false
     name: idds-dev-secret
 
   ingress:
@@ -51,7 +56,7 @@ postgres:
 
   # use secret
   secret:
-    enabled: true
+    enabled: false
     name: idds-dev-secret
 
   # PV: For use cases that users are not allowed to create PV,

@@ -9,7 +9,7 @@ harvester:
     selector: false
 
   secret:
-    enabled: true
+    enabled: false
     name: harvester-dev-secret
 
   httpProxy: "http://atlsquid.slac.stanford.edu:3128"
@@ -22,7 +22,7 @@ harvester:
 
 mariadb:
   secret:
-    enabled: true
+    enabled: false
     name: harvester-dev-secret
 
   persistentvolume:
