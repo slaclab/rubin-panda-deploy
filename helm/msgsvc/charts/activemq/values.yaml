@@ -10,8 +10,8 @@ image:
   tag: "latest"
 
 persistentvolume:
-  create: false
-  class: nas
+  create: true
+  class: manual
   path: "/mnt/activemq-data"
   size: 5Gi
   selector: true
@@ -34,9 +34,15 @@ channels:
   - "self.jedi_taskstatus:jedi:jedi"
   - "panda_jedi:panda:jedi"
   - "panda_pilot:panda:pilot"
+  - "idds.internal:idds:idds"
 
 # base password for active MQ
 basePasswd: "ITzqWRCd"
+
+# whether to use secret
+secret:
+  enabled: false
+  name: "msgsvc-dev-secret"
 
 serviceAccount:
   # Specifies whether a service account should be created
