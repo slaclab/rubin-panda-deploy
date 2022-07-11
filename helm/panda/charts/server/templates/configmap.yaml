@@ -33,11 +33,13 @@ data:
   {{- if .Values.authIdToken }}
   PANDA_VERIFY_HOST: "off"
   PANDA_AUTH: "oidc"
+  {{- if not .Values.secret.enabled }}
   PANDA_AUTH_ID_TOKEN: {{ .Values.authIdToken }}
   PANDA_AUTH_VO: {{ .Values.authVO }}
   PANDA_ACTIVEMQ_LIST: {{ join "," .Values.activemq.serverList }}
   PANDA_ACTIVEMQ_PASSWD_panda: {{ .Values.activemq.basePasswd }}_panda
   PANDA_ACTIVEMQ_PASSWD_jedi: {{ .Values.activemq.basePasswd }}_jedi
+  {{- end }}
   {{- end }}
   {{- if .Values.httpProxy }}
   http_proxy: "{{ .Values.httpProxy }}"

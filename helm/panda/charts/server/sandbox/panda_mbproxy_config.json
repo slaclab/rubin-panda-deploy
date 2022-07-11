@@ -22,19 +22,15 @@
     "queues": {
         "panda_jobstatus": {
             "server": "iDDS_mb",
-            "destination": "/topic/pandaidds"
+            "destination": "/topic/panda_idds"
         },
         "panda_jedi": {
             "server": "panda_mb",
             "destination": "/queue/panda_jedi"
         },
-        "panda_pilot_queue": {
+        "panda_pilot": {
             "server": "panda_mb",
             "destination": "/queue/panda_pilot"
-        },
-        "panda_pilot_topic": {
-            "server": "panda_mb",
-            "destination": "/topic/panda_pilot"
         }
     }
 }

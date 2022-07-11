@@ -30,19 +30,24 @@ noRoot: false
 activemq:
   # hosts and ports
   serverList:
-    - "activemq-dev-daemon:61613"
+    - "activemq-dev:61613"
 
   # base password
   basePasswd: "ITzqWRCd"
 
 persistentvolume:
   # Set true to create PV
-  create: false
+  create: true
   # StorageClass
-  class: nas
+  class: manual
   path: "/mnt/panda-server-logs"
   size: 5Gi
   selector: true
+
+# use secret
+secret:
+  enabled: false
+  name: ""
 
 hostcerts:
   enabled: true
