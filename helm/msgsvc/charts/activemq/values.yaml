@@ -29,7 +29,7 @@ accounts:
 
 # message channels. name:write_accounts,read_account
 channels:
-  - "iddspanda:idds:panda,jedi"
+  - "iddspanda:idds:idds,panda,jedi"
   - "pandaidds:panda,jedi:idds"
   - "self.jedi_taskstatus:jedi:jedi"
   - "panda_jedi:panda:jedi"
@@ -53,10 +53,14 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+initContainers:
+  enabled: true
+
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+# podSecurityContext: {}
+podSecurityContext:
+  fsGroup: 101
 
 securityContext: {}
   # capabilities:
