@@ -40,9 +40,10 @@ iam:
   issuer: "https://panda-iam-dev.cern.ch"
 
 database:
-  name: db_name
-  user: db_user
-  password: db_password
+  # Set the reference name of the database config
+  # Default is the {{Release.Name}}-mariadb-configmap
+  # config_ref: iam-dev-mariadb-configmap
+  config_ref: ""
 
 imagePullSecrets: []
 nameOverride: ""
