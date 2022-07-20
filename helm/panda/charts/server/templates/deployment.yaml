@@ -77,7 +77,11 @@ spec:
           {{- if .Values.autoStart }}
           command: [ "/bin/sh", "-c" ]
           args:
-            - until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p 5432; do echo waiting for database; sleep 2; done;
+            - rm -fr /var/log/panda/panda_daemon.pid*;
+              rm -fr /var/lock/subsys/panda_daemon;
+
+              until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p 5432; do echo waiting for database; sleep 2; done;
+              chmod -R 777 /var/log/panda;
               cp /opt/panda/sandbox/init-panda /data/panda/;
               chmod +x /data/panda/init-panda;
               cp /opt/panda/sandbox/run-panda-crons /data/panda/;
