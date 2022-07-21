@@ -10,13 +10,3 @@ data:
   POSTGRES_USER: {{ .Values.database.user }}
   POSTGRES_PASSWORD: {{ .Values.database.password }}
   POSTGRES_SCHEMA: {{ .Values.database.schema }}
-
-  IDDS_DATABASE_NAME: "{{ .Values.database.name}}"
-  IDDS_DATABASE_USER: "{{ .Values.database.user}}"
-  IDDS_DATABASE_PASSWORD: "{{ .Values.database.password}}"
-  IDDS_DATABASE_SCHEMA: "{{ .Values.database.schema}}"
-  {{- if .Values.database.host }}
-  IDDS_DATABASE_HOST: "{{ .Values.database.host}}"
-  {{- else }}
-  IDDS_DATABASE_HOST: {{.Release.Name}}-postgres
-  {{- end }}

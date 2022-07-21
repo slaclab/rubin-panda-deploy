@@ -18,7 +18,7 @@ iddsServer: localhost
 persistentvolume:
   create: true
   class: manual
-  path: "/mnt/idds-rest-logs"
+  path: "/mnt/idds-main-logs"
   size: 5Gi
 
 panda:
@@ -32,6 +32,10 @@ panda:
   auth: "oidc"
   authVO: "Rubin:production"
   authIdToken: ""
+
+secret:
+  enabled: false
+  name: ""
 
 secret:
   enabled: false

@@ -78,7 +78,7 @@ spec:
           envFrom:
             {{- if .Values.secret.enabled }}
             - secretRef:
-                name: {{ .Values.secret.name }}-db-envs
+                name: {{ .Values.secret.name }}-envs
             {{- else }}
             - configMapRef:
                 name: {{ include "postgres.fullname" . }}-configmap

@@ -6,17 +6,12 @@
 daemon:
   enabled: true
   image:
-    tag: "0.11.9"
+    tag: "0.11.2"
 
 rest:
   enabled: true
   image:
-    tag: "0.11.9"
-
-  podSecurityContext:
-    fsGroup: 1000
-  # securityContext:
-  #   fsGroup: 48
+    tag: "0.11.2"
 
 
 postgres:

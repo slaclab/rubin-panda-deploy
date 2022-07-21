@@ -80,7 +80,7 @@ spec:
           {{ end -}}
           ports:
             - name: https
-              containerPort: 8443
+              containerPort: 443
               protocol: TCP
             - name: http
               containerPort: 8080
@@ -127,8 +127,13 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "rest.fullname" . }}
         - name: {{ include "rest.fullname" . }}-configmap
+          {{- if .Values.secret.enabled }}
+          secret:
+              secretName: {{ .Values.secret.name }}-configmap
+          {{- else }}
           configMap:
               name: {{ include "rest.fullname" . }}-configmap
+          {{- end }}
         {{- if .Values.secret.enabled }}
         - name: {{ include "rest.fullname" . }}-certs
           secret:

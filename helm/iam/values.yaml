@@ -3,6 +3,13 @@
 # Declare variables to be passed into your templates.
 
 
+database:
+  name: &db_name iamdb
+  user: &db_user iam
+  password: &db_password MyPandaPass0508
+  admin_password: &db_admin_password MyAdminPass0508
+
+organization: &organization Rubin
 secret_enabled: &secret_enabled false
 
 main:
@@ -13,8 +20,14 @@ main:
     name: "iam-dev-secret"
 
   iam:
+    organization: *organization
     cilogon_client_id: "FIXME"
     cilogon_client_secret: "FIXME"
+
+  database:
+    name: *db_name
+    user: *db_user
+    password: *db_password
 
   ingress:
     enabled: true
@@ -33,11 +46,14 @@ main:
 mariadb:
   enabled: true
 
+  iam:
+    organization: *organization
+
   database:
-    name: "iamdb"
-    user: "iam"
-    password: "MyIAMPass0508"
-    admin_password: "MyAdminPass0508"
+    name: *db_name
+    user: *db_user
+    password: *db_password
+    admin_password: *db_admin_password
 
   secret:
     enabled: *secret_enabled

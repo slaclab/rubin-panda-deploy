@@ -39,6 +39,7 @@ data:
   PANDA_AUTH_VO: {{ .Values.authVO }}
   {{- end }}
   {{- end }}
+  {{- end }}
   {{- if .Values.httpProxy }}
   http_proxy: "{{ .Values.httpProxy }}"
   {{- if .Values.noProxy }}

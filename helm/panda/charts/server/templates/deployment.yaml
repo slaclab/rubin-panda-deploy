@@ -126,8 +126,6 @@ spec:
                 {{- end }}
             {{- end }}
             - configMapRef:
-                name: {{ .Release.Name }}-external-env
-            - configMapRef:
                 name: {{ include "server.fullname" . }}-env
           env:
             - name: PANDA_SERVER_CONF_SERVERNAME
