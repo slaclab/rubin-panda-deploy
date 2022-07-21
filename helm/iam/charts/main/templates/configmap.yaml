@@ -19,6 +19,7 @@ metadata:
 data:
   # IAM_JAVA_OPTS: "-Dspring.profiles.active={{ .Values.iam.profiles }} -Dspring.data.rest.basePath=/iam -Dserver.servlet.context-path=/iam -Dlog4j2.formatMsgNoLookups=true"
   IAM_JAVA_OPTS: "-Dspring.profiles.active={{ .Values.iam.profiles }} -Dlog4j2.formatMsgNoLookups=true"
+
   {{- if .Values.database.dbhost }}
   IAM_DB_HOST: {{.Values.database.dbhost}}
   {{- else }}
@@ -29,6 +30,7 @@ data:
   IAM_DB_NAME: iam_{{.Values.iam.organization}}_db
   IAM_DB_USERNAME: {{.Values.database.user}}
   IAM_DB_PASSWORD: {{.Values.database.password}}
+
   IAM_CILOGON_CLIENT_ID: {{ .Values.iam.cilogon_client_id}}
   IAM_CILOGON_CLIENT_SECRET: {{ .Values.iam.cilogon_client_secret}}
   {{- end }}

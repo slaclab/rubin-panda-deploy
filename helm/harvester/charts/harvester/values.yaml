@@ -33,6 +33,9 @@ harvesterID: "my-harvester"
 # run with non-root pid
 noRoot: false
 
+# use stable condor instead of latest
+useStableCondor: false
+
 persistentvolume:
   create: true
   class: manual

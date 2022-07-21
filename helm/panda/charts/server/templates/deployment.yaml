@@ -77,12 +77,17 @@ spec:
           {{- if .Values.autoStart }}
           command: [ "/bin/sh", "-c" ]
           args:
-            - until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p 5432; do echo waiting for database; sleep 2; done;
+            - rm -fr /var/log/panda/panda_daemon.pid*;
+              rm -fr /var/lock/subsys/panda_daemon;
+
+              until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p 5432; do echo waiting for database; sleep 2; done;
+              chmod -R 777 /var/log/panda;
               cp /opt/panda/sandbox/init-panda /data/panda/;
               chmod +x /data/panda/init-panda;
               cp /opt/panda/sandbox/run-panda-crons /data/panda/;
               chmod +x /data/panda/run-panda-crons;
               cp /opt/panda/sandbox/* /data/panda/;
+              python /data/panda/process_template.py;
               /etc/rc.d/init.d/run-panda-services;
               sleep infinity & wait
           {{- end }}
@@ -125,6 +130,9 @@ spec:
           env:
             - name: PANDA_SERVER_CONF_SERVERNAME
               value: {{ include "server.fullname" . }}
+            # set no_proxy since $() is resolved not in envFrom section
+            - name: no_proxy
+              value: $(no_proxy),$(PANDA_IDDS_HOST)
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

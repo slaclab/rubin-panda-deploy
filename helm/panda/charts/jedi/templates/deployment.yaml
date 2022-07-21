@@ -76,11 +76,15 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - until  /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p 5432; do echo waiting for database; sleep 2; done;
+              chmod -R 777 /var/log/panda;
+              rm -fr /var/log/panda/panda_jedi.pid*;
+              rm -fr /var/lock/subsys/panda_jedi;
               cp /opt/panda/sandbox/init-jedi /data/panda/;
               chmod +x /data/panda/init-jedi;
               cp /opt/panda/sandbox/run-jedi-crons /data/panda/;
               chmod +x /data/panda/run-jedi-crons;
               cp /opt/panda/sandbox/* /data/panda/;
+              python /data/panda/process_template.py;
               /etc/rc.d/init.d/run-jedi-services;
               sleep infinity & wait
           {{- end }}
@@ -94,6 +98,8 @@ spec:
               - name: {{ include "jedi.fullname" . }}-sandbox
                 mountPath: /opt/panda/sandbox
           envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-external-env
             - configMapRef:
                 name: {{ .Release.Name }}-server-env
             {{- if .Values.secret.enabled }}

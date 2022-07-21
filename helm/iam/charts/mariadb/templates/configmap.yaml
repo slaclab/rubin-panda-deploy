@@ -22,3 +22,4 @@ data:
     CREATE DATABASE iam_{{ .Values.iam.organization }}_db CHARACTER SET latin1 COLLATE latin1_swedish_ci;
     GRANT ALL PRIVILEGES on iam_{{ .Values.iam.organization }}_db.* to '{{ .Values.database.user }}'@'%' identified by '{{ .Values.database.password }}';
 
+
