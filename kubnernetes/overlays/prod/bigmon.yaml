@@ -1,0 +1,198 @@
+---
+# Source: bigmon/charts/main/templates/configmap.yaml
+# JEDI and server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-bigmon-main-configmap
+binaryData:
+  00-httpd.conf.template: |-
+    U2VydmVyTmFtZSAke0JJR01PTl9IT1NUfQo=
+  local.py.template: |-
+    IyBEYXRhYmFzZSBzZXR0aW5ncwojIE1ha2UgdGhpcyB1bmlxdWUsIGFuZCBkb24ndCBzaGFyZSBpdCB3aXRoIGFueWJvZHkuCk1ZX1NFQ1JFVF9LRVkgPSAnJHtCSUdNT05fU0VDUkVUX0tFWX0nCgpkYmFjY2Vzc19wb3N0Z3JlcyA9IHsKICAgICAgICAgJ2RlZmF1bHQnOgogICAgICAgICB7CiAgICAgICAgICdFTkdJTkUnOidkamFuZ28uZGIuYmFja2VuZHMucG9zdGdyZXNxbF9wc3ljb3BnMicsCiAgICAgICAgICdPUFRJT05TJzogewogICAgICAgICAgICAgICAgICdvcHRpb25zJzogJy1jIHNlYXJjaF9wYXRoPWRvbWFfcGFuZGFiaWdtb24sZG9tYV9wYW5kYW1ldGEsZG9tYV9wYW5kYSxkb21hX3BhbmRhYXJjaCxwdWJsaWMnCiAgICAgICAgIH0sCiAgICAgICAgICdOQU1FJzogJyR7UEFOREFfREJfTkFNRX0nLAogICAgICAgICAnSE9TVCc6ICcke1BBTkRBX0RCX0hPU1R9JywKICAgICAgICAgJ1BPUlQnOiAnJHtQQU5EQV9EQl9QT1JUfScsCiAgICAgICAgICdVU0VSJzogJyR7UEFOREFfREJfVVNFUn0nLAogICAgICAgICAnUEFTU1dPUkQnOiAiJHtQQU5EQV9EQl9QQVNTV09SRH0iLAogICAgICAgICB9LAp9CgpkYmFjY2VzcyA9IGRiYWNjZXNzX3Bvc3RncmVzCgojYXdzCmF3cyA9IHsKICAgICJBV1NfQUNDRVNTX0tFWV9BVExBUyIgOiAiJHtBV1NfQUNDRVNTX0tFWV9BVExBU30iLAogICAgIkFXU19TRUNSRVRfS0VZX0FUTEFTIiA6ICIke0FXU19TRUNSRVRfS0VZX0FUTEFTfSIKfQoKClNFU1NJT05fQ09PS0lFX1NBTUVTSVRFID0gTm9uZQpTT0NJQUxfQVVUSF9SRURJUkVDVF9JU19IVFRQUyA9IEZhbHNlClNFU1NJT05fQ09PS0lFX1NFQ1VSRT1GYWxzZQoKIyBzZXQgZGVmYXVsdCBkYXRldGltZSBmb3JtYXQgZm9yIGRhdGV0aW1lLmRhdGV0aW1lLnN0cmZ0aW1lKCkKZGVmYXVsdERhdGV0aW1lRm9ybWF0TXlTUUwgPSAiJVktJW0tJWQgJUg6JU06JVNaIgpkZWZhdWx0RGF0ZXRpbWVGb3JtYXRPcmFjbGUgPSAiJVktJW0tJWQgJUg6JU06JVMiCmRlZmF1bHREYXRldGltZUZvcm1hdCA9IGRlZmF1bHREYXRldGltZUZvcm1hdE9yYWNsZQoKCkZJTEVCUk9XU0VSX0RJUkVDVE9SWSA9ICJmaWxlYnJvd3NlciIKUlVDSU9fQUNDT1VOVCA9ICIke1JVQ0lPX0FDQ09VTlR9IgpDQVBBVEggPSAiL2V0Yy9ncmlkLXNlY3VyaXR5L2NlcnRpZmljYXRlcyIKUlVDSU9fUkVESVJFQ1RfSE9TVCA9ICIke1JVQ0lPX1NFUlZFUl9IT1NUfSIKUlVDSU9fQVVUSF9IT1NUID0gIiR7UlVDSU9fQVVUSF9IT1NUfSIKUlVDSU9fU0VSVkVSX0hPU1QgPSAiJHtSVUNJT19TRVJWRVJfSE9TVH0iCk1FRElBX1VSTCA9ICcvbWVkaWEvJwoKCiMgbG9nIGRpcmVjdG9yeQpMT0dfUk9PVCA9ICIvZGF0YS9iaWdtb24vbG9ncyIKREVCVUcgPSAke0JJR01PTl9ERUJVR30KI1VTRV9UWiA9IFRydWUKVVNFX1RaID0gRmFsc2UKUFJPRFNZUyA9IHsKInByb2RzeXNIb3N0IjogJ3Byb2R0YXNrLWRldi5jZXJuLmNoJywKInByb2RzeXNUb2tlbiI6ICIke1BST0RTWVNfVE9LRU59IiwKInByb2RzeXNVcmwiOiAnL3Byb2R0YXNrL3Rhc2tfYWN0aW9uX2V4dC9maW5pc2gvJywKfQpFUyA9IHsKImVzSG9zdCI6J2VzLWF0bGFzLmNlcm4uY2gnLAoiZXNQb3J0IjonOTIwMycsCiJlc1VzZXIiOicke0VTX1VTRVJ9JywKImVzUGFzc3dvcmQiOicke0VTX1BBU1NXT1JEfScsCn0KClNPQ0lBTF9BVVRIX0dPT0dMRV9PQVVUSDJfS0VZID0gIiR7U09DSUFMX0FVVEhfR09PR0xFX09BVVRIMl9LRVl9IgpTT0NJQUxfQVVUSF9HT09HTEVfT0FVVEgyX1NFQ1JFVCA9ICIke1NPQ0lBTF9BVVRIX0dPT0dMRV9PQVVUSDJfU0VDUkVUfSIKClNPQ0lBTF9BVVRIX0NFUk5PSURDX0tFWSA9ICcke1NPQ0lBTF9BVVRIX0NFUk5PSURDX0tFWX0nClNPQ0lBTF9BVVRIX0NFUk5PSURDX1NFQ1JFVCA9ICcke1NPQ0lBTF9BVVRIX0NFUk5PSURDX1NFQ1JFVH0nCgpTT0NJQUxfQVVUSF9HSVRIVUJfS0VZID0gJyR7U09DSUFMX0FVVEhfR0lUSFVCX0tFWX0nClNPQ0lBTF9BVVRIX0dJVEhVQl9TRUNSRVQgPSAnJHtTT0NJQUxfQVVUSF9HSVRIVUJfU0VDUkVUfScKClNPQ0lBTF9BVVRIX0lORElHT0lBTV9LRVkgPSAnJHtTT0NJQUxfQVVUSF9JTkRJR09JQU1PSURDX0tFWX0nClNPQ0lBTF9BVVRIX0lORElHT0lBTV9TRUNSRVQgPSAnJHtTT0NJQUxfQVVUSF9JTkRJR09JQU1PSURDX1NFQ1JFVH0nClNPQ0lBTF9BVVRIX0lORElHT0lBTV9CQVNFUEFUSCA9ICcke1NPQ0lBTF9BVVRIX0lORElHT0lBTU9JRENfQkFTRVBBVEh9JwoKRU1BSUxfSE9TVCA9ICJzbXRwLmNlcm4uY2giCkVNQUlMX1BPUlQgPSA1ODcKRU1BSUxfSE9TVF9VU0VSID0gIiR7RU1BSUxfSE9TVF9VU0VSfSIKRU1BSUxfSE9TVF9QQVNTV09SRCA9ICIke0VNQUlMX0hPU1RfUEFTU1dPUkR9OCIKRU1BSUxfVVNFX1RMUyA9IFRydWUKR1JBRkFOQSA9IHsKICAgICJBdXRob3JpemF0aW9uIjogIkJlYXJlciAke0dSQUZBTkFfQVVUSF9UT0tFTn0iCiAgIH0KT0NfVE9LRU4gPSAiJHtPQ19UT0tFTn0iCk9DX0VORFBPSU5UID0gIm9wZW5zaGlmdC5jZXJuLmNoIgpPQ19OQU1FU1BBQ0UgPSAiYmlncGFuZGEtbWxmbG93IgoK
+  process_template.py: |-
+    aW1wb3J0IG9zCmltcG9ydCByZQppbXBvcnQgZ2xvYgoKIyBsb29wIG92ZXIgYWxsIHRlbXBsYXRlIGZpbGVzCnNhbmRib3hfZGlyID0gb3MucGF0aC5hYnNwYXRoKG9zLnBhdGguZGlybmFtZShfX2ZpbGVfXykpCmZvciBuYW1lIGluIGdsb2IuZ2xvYihvcy5wYXRoLmpvaW4oc2FuZGJveF9kaXIsICcqLnRlbXBsYXRlJykpOgogICAgbmV3X2ZpbGVuYW1lID0gcmUuc3ViKCdcLnRlbXBsYXRlJCcsICcnLCBuYW1lKQogICAgIyBwYXRjaAogICAgd2l0aCBvcGVuKG5hbWUpIGFzIGY6CiAgICAgICAgdGVtcGxhdGUgPSBmLnJlYWQoKQogICAgICAgICMgcmVwbGFjZSBwbGFjZWhvbGRlcnMgd2l0aCBlbnYgdmFycwogICAgICAgIGl0ZW1zID0gcmUuZmluZGFsbChyJ1wkXHsoXHcrKVx9JywgdGVtcGxhdGUpCiAgICAgICAgZG9uZV9saXN0ID0gc2V0KCkKICAgICAgICBmb3IgaXRlbSBpbiBpdGVtczoKICAgICAgICAgICAgaWYgaXRlbSBpbiBkb25lX2xpc3Q6CiAgICAgICAgICAgICAgICBjb250aW51ZQogICAgICAgICAgICBkb25lX2xpc3QuYWRkKGl0ZW0pCiAgICAgICAgICAgIGlmIGl0ZW0gaW4gb3MuZW52aXJvbjoKICAgICAgICAgICAgICAgIHRlbXBsYXRlID0gdGVtcGxhdGUucmVwbGFjZSgnJHsnK2l0ZW0rJ30nLCBvcy5lbnZpcm9uW2l0ZW1dKQogICAgIyBkdW1wCiAgICB3aXRoIG9wZW4obmV3X2ZpbGVuYW1lLCAndycpIGFzIGY6CiAgICAgICAgZi53cml0ZSh0ZW1wbGF0ZSkK
+---
+# Source: bigmon/charts/main/templates/configmap.yaml
+# env variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-bigmon-main-env
+data:
+  # bigmon
+  BIGMON_HOST: "FIXME"
+  BIGMON_NUM_WSGI_PROC: "10"
+  BIGMON_SECRET_KEY: "FIXME"
+  BIGMON_VO: "FIXME"
+  BIGMON_DEPLOYMENT: "POSTGRES"
+  BIGMON_DEBUG: "False"
+  # Auth
+  SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: "FIXME"
+  SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: "FIXME"
+  SOCIAL_AUTH_CERNOIDC_KEY: "FIXME"
+  SOCIAL_AUTH_CERNOIDC_SECRET: "FIXME"
+  SOCIAL_AUTH_GITHUB_KEY: "FIXME"
+  SOCIAL_AUTH_GITHUB_SECRET: "FIXME"
+  SOCIAL_AUTH_INDIGOIAMOIDC_KEY: "FIXME"
+  SOCIAL_AUTH_INDIGOIAMOIDC_SECRET: "FIXME"
+  SOCIAL_AUTH_INDIGOIAMOIDC_BASEPATH: "FIXME"
+  # PandaDB
+  PANDA_DB_NAME: "panda_db"
+  PANDA_DB_HOST: "panda-postgres"
+  PANDA_DB_PORT: "5432"
+  PANDA_DB_USER: "panda"
+  PANDA_DB_PASSWORD: "FIXME"
+  # Rucio
+  RUCIO_SERVER_HOST: "https://rucio-lb-prod.cern.ch"
+  RUCIO_AUTH_HOST: "https://rucio-auth-prod.cern.ch"
+  RUCIO_ACCOUNT: "iddsv1"
+  # CRIC
+  CRIC_API_URL: "https://datalake-cric.cern.ch/api/atlas/pandaqueue/query/?json"
+  # iDDS
+  IDDS_HOST: "https://idds-rest:443/idds"
+  # AWS
+  AWS_ACCESS_KEY_ATLAS: "FIXME"
+  AWS_SECRET_KEY_ATLAS: "FIXME"
+
+  # HTTP proxy
+---
+# Source: bigmon/charts/main/templates/deployment.yaml
+# pv
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: usdfprod-bigmon-main
+  labels:
+    helm.sh/chart: main-0.1.0
+    app.kubernetes.io/name: main
+    app.kubernetes.io/instance: usdfprod-bigmon
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  storageClassName: 
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: bigmon/charts/main/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: usdfprod-bigmon-main
+  labels:
+    helm.sh/chart: main-0.1.0
+    app.kubernetes.io/name: main
+    app.kubernetes.io/instance: usdfprod-bigmon
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app.kubernetes.io/name: main
+    app.kubernetes.io/instance: usdfprod-bigmon
+---
+# Source: bigmon/charts/main/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usdfprod-bigmon-main
+  labels:
+    helm.sh/chart: main-0.1.0
+    app.kubernetes.io/name: main
+    app.kubernetes.io/instance: usdfprod-bigmon
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: main
+      app.kubernetes.io/instance: usdfprod-bigmon
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: main
+        app.kubernetes.io/instance: usdfprod-bigmon
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: main
+          securityContext:
+            {}
+          image: "ghcr.io/pandawms/panda-bigmon-core:v0.3.0"
+          imagePullPolicy: IfNotPresent
+
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp /data/bigmon/configmap/* /data/bigmon/config/ ;
+              python /data/bigmon/config/process_template.py ;
+              until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+              start-daemon.sh all
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          resources:
+            {}
+          volumeMounts:
+              - name: usdfprod-bigmon-main-logs
+                mountPath: /data/bigmon/logs
+              - name: usdfprod-bigmon-main-configmap
+                mountPath: /data/bigmon/configmap
+          envFrom:
+            - configMapRef:
+                name: usdfprod-bigmon-main-env
+      volumes:
+        - name: usdfprod-bigmon-main-logs
+          persistentVolumeClaim:
+            claimName: usdfprod-bigmon-main
+        - name: usdfprod-bigmon-main-configmap
+          configMap:
+              name: usdfprod-bigmon-main-configmap
+---
+# Source: bigmon/charts/main/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usdfprod-bigmon-main
+  labels:
+    helm.sh/chart: main-0.1.0
+    app.kubernetes.io/name: main
+    app.kubernetes.io/instance: usdfprod-bigmon
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: optional
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - "usdfprod-bigmon-main.cern.ch"
+      secretName: 
+  rules:
+    - host: "usdfprod-bigmon-main.cern.ch"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: usdfprod-bigmon-main
+                port:
+                  number: 443

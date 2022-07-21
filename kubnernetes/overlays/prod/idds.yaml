@@ -1,0 +1,568 @@
+---
+# Source: idds/charts/postgres/templates/configmap.yaml
+# config map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-idds-postgres-configmap
+  labels:
+    helm.sh/chart: postgres-0.1.0
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  POSTGRES_DB: idds_db
+  POSTGRES_USER: idds
+  POSTGRES_PASSWORD: MyPass123
+  POSTGRES_SCHEMA: doma_idds
+---
+# Source: idds/charts/rest/templates/configmap.yaml
+# iDDS configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-idds-rest-configmap
+data:
+  idds_configmap.json: |-
+    {"/opt/idds/config/idds/idds.cfg":
+        {"common":
+            {"loglevel": "DEBUG"},
+         "database":
+            {"default": "postgresql://:@usdfprod-idds-postgres/",
+             "schema": "",
+             "pool_size": 20,
+             "pool_recycle": 3600,
+             "echo": 0,
+             "pool_reset_on_return": "rollback"
+            },
+         "conductor":
+            {"threshold_to_release_messages": 1000,
+             "random_delay": 60,
+              "plugin.notifier": "idds.agents.conductor.plugins.messaging.MessagingSender",
+              "plugin.notifier.brokers": "atlas-mb.cern.ch",
+              "plugin.notifier.port": 61013,
+              "plugin.notifier.destination": "/topic/doma.idds",
+              "plugin.notifier.username": "username",
+              "plugin.notifier.password": "password",
+              "plugin.notifier.broker_timeout": 10
+            }
+        },
+    "/opt/idds/config/idds/auth.cfg":
+        {"common":
+            {"allow_vos": "atlas,panda_dev,Rubin,Rubin:production"
+        },
+         "atlas":
+            {"client_secret": "abc",
+             "audience": "https://pandaserver-doma.cern.ch",
+             "client_id": "abc",
+             "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+             "vo": "atlas"
+            },
+         "Rubin":
+            {"client_secret": "abc",
+             "audience": "https://pandaserver-doma.cern.ch",
+             "client_id": "abc",
+             "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+             "vo": "Rubin"
+            },
+         "Rubin:production":
+            {"client_secret": "abc",
+             "audience": "https://pandaserver-doma.cern.ch",
+             "client_id": "abc",
+             "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+             "vo": "Rubin:production"
+            },
+          "panda_dev":
+            {"client_secret": "abc",
+             "audience": "https://pandaserver-doma.cern.ch",
+             "client_id": "abc",
+             "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+             "vo": "panda_dev"
+            }
+        },
+    "/opt/idds/config/panda.cfg":
+        {"panda":
+            {"panda_url_ssl": "",
+             "panda_url": "",
+             "panda_monitor_url": "",
+             "# PANDA_AUTH_VO": "panda_dev",
+             "panda_auth": "",
+             "panda_auth_vo": "",
+             "panda_config_root": "",
+             "pandacache_url": "",
+             "panda_verify_host": ""
+        }
+        },
+    "/opt/idds/config/rucio.cfg":
+        {"client":
+            {"rucio_host": "https://voatlasrucio-server-prod.cern.ch:443",
+             "auth_host": "https://voatlasrucio-auth-prod.cern.ch:443",
+             "ca_cert": "$RUCIO_HOME/etc/ca.crt",
+             "client_cert": "~/.globus/usercert.pem",
+             "client_key": "~/.globus/userkey.pem",
+             "client_x509_proxy": "$X509_USER_PROXY",
+             "auth_type": "x509_proxy",
+             "request_retries": 3
+        }
+        },
+    "rest/config/idds.cfg":
+        {"testsection":
+            {"testkey": "testvalue"}
+        }
+    }
+
+  idds2panda_token: |-
+        
+
+  idds_configmap_back.json: |-
+        {
+            "/opt/idds/config/idds/idds.cfg":
+                {"common":
+                    {"loglevel": "DEBUG"},
+                 "database":
+                    {"default": "postgresql://${IDDS_DATABASE_USER}:${IDDS_DATABASE_PASSWORD}@${IDDS_DATABASE_HOST}/${IDDS_DATABASE_NAME}",
+                     "schema": "${IDDS_DATABASE_SCHEMA}",
+                     "pool_size": 20,
+                     "pool_recycle": 3600,
+                     "echo": 0,
+                     "pool_reset_on_return": "rollback"
+                    },
+                 "conductor":
+                    {"threshold_to_release_messages": 1000,
+                     "random_delay": 60,
+                      "plugin.notifier": "idds.agents.conductor.plugins.messaging.MessagingSender",
+                      "plugin.notifier.brokers": "${IDDS_CONDUCTOR_BROKERS}",
+                      "plugin.notifier.port": "${IDDS_CONDUCTOR_PORT}",
+                      "plugin.notifier.destination": "${IDDS_CONDUCTOR_DESTINATION}",
+                      "plugin.notifier.username": "${IDDS_CONDUCTOR_USERNAME}",
+                      "plugin.notifier.password": "${IDDS_CONDUCTOR_PASSWORD}",
+                      "plugin.notifier.broker_timeout": 10
+                    }
+                },
+            "/opt/idds/config/idds/auth.cfg":
+                {"common":
+                    {"allow_vos": "panda_dev,Rubin,Rubin.production"
+                    },
+                 "Rubin":
+                    {"client_secret": "${IDDS_OIDC_RUBIN_CLIENT_SECRET}",
+                     "audience": "https://pandaserver-doma.cern.ch",
+                     "client_id": "${IDDS_OIDC_RUBIN_CLIENT_ID}",
+                     "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+                     "vo": "Rubin"
+                    },
+                 "Rubin.production":
+                    {"client_secret": "${IDDS_OIDC_RUBIN_PRODUCTION_CLIENT_SECRET}",
+                     "audience": "https://pandaserver-doma.cern.ch",
+                     "client_id": "${IDDS_OIDC_RUBIN_PRODUCTION_CLIENT_ID}",
+                     "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+                     "vo": "Rubin.production"
+                    },
+                  "panda_dev":
+                    {"client_secret": "${IDDS_OIDC_PANDA_DEV_CLIENT_SECRET}",
+                     "audience": "https://pandaserver-doma.cern.ch",
+                     "client_id": "${IDDS_OIDC_PANDA_DEV_CLIENT_ID}",
+                     "oidc_config_url": "https://panda-iam-doma.cern.ch/.well-known/openid-configuration",
+                     "vo": "panda_dev"
+                    }
+                },
+            "/opt/idds/config/panda.cfg":
+                {"panda":
+                    {"panda_url_ssl": "${PANDA_URL_SSL}",
+                     "panda_url": "${PANDA_URL}",
+                     "panda_monitor_url": "${PANDA_MONITOR_URL}",
+                     "# PANDA_AUTH_VO": "panda_dev",
+                     "panda_auth": "${PANDA_AUTH}",
+                     "panda_auth_vo": "${PANDA_AUTH_VO}",
+                     "panda_config_root": "${PANDA_CONFIG_ROOT}",
+                     "pandacache_url": "${PANDACACHE_URL}",
+                     "panda_verify_host": "${PANDA_VERIFY_HOST}"
+                }
+                },
+            "/opt/idds/config/rucio.cfg":
+                {"client":
+                    {"rucio_host": "https://voatlasrucio-server-prod.cern.ch:443",
+                     "auth_host": "https://voatlasrucio-auth-prod.cern.ch:443",
+                     "ca_cert": "$RUCIO_HOME/etc/ca.crt",
+                     "client_cert": "~/.globus/usercert.pem",
+                     "client_key": "~/.globus/userkey.pem",
+                     "client_x509_proxy": "$X509_USER_PROXY",
+                     "auth_type": "x509_proxy",
+                     "request_retries": 3
+                }
+                },
+            "rest/config/idds.cfg":
+                {"testsection":
+                    {"testkey": "testvalue"}
+                }
+        }
+        
+
+  idds2panda_token: |-
+---
+# Source: idds/charts/rest/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-idds-rest-envs
+data:
+  IDDS_SERVER: "idds-dev.slac.stanford.edu"
+  http_proxy: "http://squid.slac.stanford.edu:3128"
+  no_proxy: "localhost,idds-dev-rest,idds-dev-daemon,panda-dev-server,panda-dev-jedi"
+  https_proxy: "http://squid.slac.stanford.edu:3128"
+
+  PANDA_MONITOR_URL: "https://panda-dev-server"
+  PANDA_URL: "http://panda-dev-server:80/server/panda"
+  PANDA_URL_SSL: "https://panda-dev-server:443/server/panda"
+  PANDACACHE_URL: "https://panda-dev-server:443/server/panda"
+  PANDA_VERIFY_HOST: "off"
+  PANDA_CONFIG_ROOT: "/opt/idds/config/"
+---
+# Source: idds/charts/rest/templates/configmap.yaml
+# sandbox
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usdfprod-idds-rest-sandbox
+binaryData:
+---
+# Source: idds/charts/daemon/templates/deployment.yaml
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: usdfprod-idds-daemon
+  labels:
+    helm.sh/chart: daemon-0.1.0
+    app.kubernetes.io/name: daemon
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  storageClassName: wekafs--sdf-k8s01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: idds/charts/postgres/templates/deployment.yaml
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: usdfprod-idds-postgres
+  labels:
+    helm.sh/chart: postgres-0.1.0
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  storageClassName: wekafs--sdf-k8s01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: idds/charts/rest/templates/deployment.yaml
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: usdfprod-idds-rest
+  labels:
+    helm.sh/chart: rest-0.1.0
+    app.kubernetes.io/name: rest
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  storageClassName: wekafs--sdf-k8s01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: idds/charts/postgres/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: usdfprod-idds-postgres
+  labels:
+    helm.sh/chart: postgres-0.1.0
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: postgres-port
+      protocol: TCP
+      name: postgres-port
+  selector:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: usdfprod-idds
+---
+# Source: idds/charts/rest/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: usdfprod-idds-rest
+  labels:
+    helm.sh/chart: rest-0.1.0
+    app.kubernetes.io/name: rest
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8443
+      targetPort: https
+      protocol: TCP
+      name: https
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: rest
+    app.kubernetes.io/instance: usdfprod-idds
+---
+# Source: idds/charts/daemon/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usdfprod-idds-daemon
+  labels:
+    helm.sh/chart: daemon-0.1.0
+    app.kubernetes.io/name: daemon
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: daemon
+      app.kubernetes.io/instance: usdfprod-idds
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: daemon
+        app.kubernetes.io/instance: usdfprod-idds
+    spec:
+      hostname:  usdfprod-idds
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: daemon
+          securityContext:
+            {}
+          image: "ghcr.io/hsf/idds:0.11.2"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - sleep 30;
+              start-daemon.sh daemon
+          resources:
+            {}
+          envFrom:
+            - configMapRef:
+                name: usdfprod-idds-rest-envs
+          volumeMounts:
+              - name: usdfprod-idds-daemon-logs
+                mountPath: /var/log/idds/
+              - name: usdfprod-idds-daemon-configmap
+                mountPath: /opt/idds/configmap
+      volumes:
+        - name: usdfprod-idds-daemon-logs
+          persistentVolumeClaim:
+            claimName: usdfprod-idds-daemon
+        - name: usdfprod-idds-daemon-configmap
+          secret:
+              secretName: idds-dev-secret-configmap
+        - name: usdfprod-idds-daemon-certs
+          secret:
+              secretName: idds-dev-secret-certs
+---
+# Source: idds/charts/postgres/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usdfprod-idds-postgres
+  labels:
+    helm.sh/chart: postgres-0.1.0
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres
+      app.kubernetes.io/instance: usdfprod-idds
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres
+        app.kubernetes.io/instance: usdfprod-idds
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: postgres
+          securityContext:
+            {}
+          image: "postgres:13.6"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres-port
+              containerPort: 5432
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: idds-dev-secret-envs
+          resources:
+            {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: usdfprod-idds-postgres-data
+      volumes:
+        - name: usdfprod-idds-postgres-data
+          persistentVolumeClaim:
+            claimName: usdfprod-idds-postgres
+---
+# Source: idds/charts/rest/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usdfprod-idds-rest
+  labels:
+    helm.sh/chart: rest-0.1.0
+    app.kubernetes.io/name: rest
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rest
+      app.kubernetes.io/instance: usdfprod-idds
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rest
+        app.kubernetes.io/instance: usdfprod-idds
+    spec:
+      hostname:  usdfprod-idds
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: rest
+          securityContext:
+            {}
+          image: "ghcr.io/hsf/idds:0.11.2"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - sleep 30;
+              start-daemon.sh rest
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: usdfprod-idds-rest-envs
+            - secretRef:
+                name: idds-dev-secret-envs
+          resources:
+            {}
+          volumeMounts:
+              - name: usdfprod-idds-rest-logs
+                mountPath: /var/log/idds/
+              - name: usdfprod-idds-rest-configmap
+                mountPath: /opt/idds/configmap
+      volumes:
+        - name: usdfprod-idds-rest-logs
+          persistentVolumeClaim:
+            claimName: usdfprod-idds-rest
+        - name: usdfprod-idds-rest-configmap
+          secret:
+              secretName: idds-dev-secret-configmap
+        - name: usdfprod-idds-rest-certs
+          secret:
+              secretName: idds-dev-secret-certs
+---
+# Source: idds/charts/rest/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usdfprod-idds-rest
+  labels:
+    helm.sh/chart: rest-0.1.0
+    app.kubernetes.io/name: rest
+    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-proxy-set-headers: X-IDDS-Auth-Type,X-IDDS-Auth-VO,X-IDDS-Auth-Token
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-secret: default/ca-secret-wguan
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: optional
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "10"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
+      proxy_set_header X-IDDS-Auth-Type $http_x_idds_auth_type;
+      proxy_set_header X-IDDS-Auth-VO $http_x_idds_auth_vo;
+      proxy_set_header X-IDDS-Auth-Token $http_x_idds_auth_token;
+      add_header X-IDDS-Auth-Type $http_x_idds_auth_type;
+      add_header X-IDDS-Auth-VO $http_x_idds_auth_vo;
+      add_header X-IDDS-Auth-Token $http_x_idds_auth_token;
+      # proxy_set_header X-SSL-CERT $ssl_client_escaped_cert;
+    nginx.ingress.kubernetes.io/proxy-pass-headers: X-IDDS-Auth-Type,X-IDDS-Auth-VO,X-IDDS-Auth-Token
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      ssl on;
+      # ssl_protocols TLSv1.1 TLSv1.2;
+      # ssl_trusted_certificate /etc/ingress-controller/ssl/ca-default-ca-secret-bundle.pem;
+      # ssl_ciphers HIGH:!aNULL:!MD5;
+      # ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.org/proxy-pass-headers: X-IDDS-Auth-Type,X-IDDS-Auth-VO,X-IDDS-Auth-Token
+spec:
+  tls:
+    - hosts:
+        - "idds-dev.slac.stanford.edu"
+      secretName: idds-dev-main-tlssan-cert
+  rules:
+    - host: "idds-dev.slac.stanford.edu"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: usdfprod-idds-rest
+                port:
+                  number: 8443
+---
+# Source: idds/charts/daemon/templates/configmap.yaml
+# iDDS configuration
