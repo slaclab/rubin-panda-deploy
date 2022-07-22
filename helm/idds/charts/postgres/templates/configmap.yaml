@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "postgres.fullname" . }}-configmap
+  name: {{ include "postgres.fullname" . }}-idds-configmap
   labels:
     {{- include "postgres.labels" . | nindent 4 }}
 data:

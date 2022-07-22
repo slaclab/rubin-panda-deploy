@@ -81,7 +81,7 @@ spec:
                 name: {{ .Values.secret.name }}-envs
             {{- else }}
             - configMapRef:
-                name: {{ include "postgres.fullname" . }}-configmap
+                name: {{ include "postgres.fullname" . }}-idds-configmap
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -96,7 +96,7 @@ spec:
                 {{- if .Values.database.config_ref }}
                 name: {{ .Values.database.config_ref }}
                 {{- else }}
-                name: {{ .Release.Name }}-postgres-configmap
+                name: {{ .Release.Name }}-postgres-idds-configmap
                 {{- end }}
             {{- end }}
           resources:
