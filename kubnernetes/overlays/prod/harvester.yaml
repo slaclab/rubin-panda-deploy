@@ -488,11 +488,11 @@ binaryData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-harvester-mariadb-configmap
+  name: usdfprod-mariadb-configmap
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -500,7 +500,7 @@ data:
   MARIADB_USER: "harvester"
   MARIADB_PASSWORD: NKdSRhjE
   MARIADB_ROOT_PASSWORD: MbUceKpF
-  HARVESTER_DB_HOST: usdfprod-harvester-mariadb
+  HARVESTER_DB_HOST: usdfprod-mariadb
 ---
 # Source: harvester/charts/harvester/templates/deployment.yaml
 # pv
@@ -512,7 +512,7 @@ metadata:
   labels:
     helm.sh/chart: harvester-0.1.0
     app.kubernetes.io/name: harvester
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -528,11 +528,11 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-harvester-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -547,11 +547,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: usdfprod-harvester-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -563,7 +563,7 @@ spec:
       name: mariadb-port
   selector:
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: harvester/charts/harvester/templates/deployment.yaml
 apiVersion: apps/v1
@@ -573,7 +573,7 @@ metadata:
   labels:
     helm.sh/chart: harvester-0.1.0
     app.kubernetes.io/name: harvester
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -581,14 +581,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: harvester
-      app.kubernetes.io/instance: usdfprod-harvester
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: harvester
-        app.kubernetes.io/instance: usdfprod-harvester
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-harvester
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -625,8 +625,8 @@ spec:
             - name: usdfprod-harvester-certs
               mountPath: /opt/harvester/etc/cert
           envFrom:
-            - secretRef:
-                name: harvester-dev-secret-envs
+            - configMapRef:
+                name: usdfprod-mariadb-configmap
             - configMapRef:
                 name: usdfprod-harvester-env
       volumes:
@@ -643,18 +643,18 @@ spec:
           configMap:
             name: usdfprod-harvester-sandbox
         - name: usdfprod-harvester-certs
-          secret:
-              secretName: harvester-dev-secret-certs
+          configMap:
+              name: usdfprod-harvester-certs
 ---
 # Source: harvester/charts/mariadb/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-harvester-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-harvester
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -662,12 +662,12 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: mariadb
-      app.kubernetes.io/instance: usdfprod-harvester
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: mariadb
-        app.kubernetes.io/instance: usdfprod-harvester
+        app.kubernetes.io/instance: usdfprod
     spec:
       serviceAccountName: default
       securityContext:
@@ -683,14 +683,14 @@ spec:
               containerPort: 3306
               protocol: TCP
           envFrom:
-            - secretRef:
-                name: harvester-dev-secret-envs
+            - configMapRef:
+                name: usdfprod-mariadb-configmap
           resources:
             {}
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: usdfprod-harvester-mariadb-data
+              name: usdfprod-mariadb-data
       volumes:
-        - name: usdfprod-harvester-mariadb-data
+        - name: usdfprod-mariadb-data
           persistentVolumeClaim:
-            claimName: usdfprod-harvester-mariadb
+            claimName: usdfprod-mariadb

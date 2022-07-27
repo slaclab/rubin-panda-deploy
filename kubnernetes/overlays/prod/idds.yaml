@@ -4,11 +4,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-idds-postgres-configmap
+  name: usdfprod-postgres-idds-configmap
   labels:
     helm.sh/chart: postgres-0.1.0
     app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -22,14 +22,14 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-idds-rest-configmap
+  name: usdfprod-rest-configmap
 data:
   idds_configmap.json: |-
     {"/opt/idds/config/idds/idds.cfg":
         {"common":
             {"loglevel": "DEBUG"},
          "database":
-            {"default": "postgresql://:@usdfprod-idds-postgres/",
+            {"default": "postgresql://:@usdfprod-postgres/",
              "schema": "",
              "pool_size": 20,
              "pool_recycle": 3600,
@@ -196,15 +196,12 @@ data:
                     {"testkey": "testvalue"}
                 }
         }
-        
-
-  idds2panda_token: |-
 ---
 # Source: idds/charts/rest/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-idds-rest-envs
+  name: usdfprod-rest-envs
 data:
   IDDS_SERVER: "idds-dev.slac.stanford.edu"
   http_proxy: "http://squid.slac.stanford.edu:3128"
@@ -217,13 +214,26 @@ data:
   PANDACACHE_URL: "https://panda-dev-server:443/server/panda"
   PANDA_VERIFY_HOST: "off"
   PANDA_CONFIG_ROOT: "/opt/idds/config/"
+
+  IDDS_CONDUCTOR_BROKERS: "atlas-mb.cern.ch"
+  IDDS_CONDUCTOR_PORT: "61013"
+  IDDS_CONDUCTOR_DESTINATION: "/topic/doma.idds"
+  IDDS_CONDUCTOR_USERNAME: "username"
+  IDDS_CONDUCTOR_PASSWORD: "password"
+
+  IDDS_OIDC_RUBIN_CLIENT_ID: "abc"
+  IDDS_OIDC_RUBIN_CLIENT_SECRET: "abc"
+  IDDS_OIDC_RUBIN_PRODUCTION_CLIENT_ID: "abc"
+  IDDS_OIDC_RUBIN_PRODUCTION_CLIENT_SECRET: "abc"
+  IDDS_OIDC_PANDA_DEV_CLIENT_ID: "abc"
+  IDDS_OIDC_PANDA_DEV_CLIENT_SECRET: "abc"
 ---
 # Source: idds/charts/rest/templates/configmap.yaml
 # sandbox
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-idds-rest-sandbox
+  name: usdfprod-rest-sandbox
 binaryData:
 ---
 # Source: idds/charts/daemon/templates/deployment.yaml
@@ -231,11 +241,11 @@ binaryData:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-idds-daemon
+  name: usdfprod-daemon
   labels:
     helm.sh/chart: daemon-0.1.0
     app.kubernetes.io/name: daemon
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -251,11 +261,11 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-idds-postgres
+  name: usdfprod-postgres
   labels:
     helm.sh/chart: postgres-0.1.0
     app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -271,11 +281,11 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-idds-rest
+  name: usdfprod-rest
   labels:
     helm.sh/chart: rest-0.1.0
     app.kubernetes.io/name: rest
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -290,11 +300,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: usdfprod-idds-postgres
+  name: usdfprod-postgres
   labels:
     helm.sh/chart: postgres-0.1.0
     app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -306,17 +316,17 @@ spec:
       name: postgres-port
   selector:
     app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: idds/charts/rest/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: usdfprod-idds-rest
+  name: usdfprod-rest
   labels:
     helm.sh/chart: rest-0.1.0
     app.kubernetes.io/name: rest
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -332,17 +342,17 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: rest
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: idds/charts/daemon/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-idds-daemon
+  name: usdfprod-daemon
   labels:
     helm.sh/chart: daemon-0.1.0
     app.kubernetes.io/name: daemon
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -350,14 +360,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: daemon
-      app.kubernetes.io/instance: usdfprod-idds
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: daemon
-        app.kubernetes.io/instance: usdfprod-idds
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-idds
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -375,32 +385,29 @@ spec:
             {}
           envFrom:
             - configMapRef:
-                name: usdfprod-idds-rest-envs
+                name: usdfprod-rest-envs
           volumeMounts:
-              - name: usdfprod-idds-daemon-logs
+              - name: usdfprod-daemon-logs
                 mountPath: /var/log/idds/
-              - name: usdfprod-idds-daemon-configmap
+              - name: usdfprod-daemon-configmap
                 mountPath: /opt/idds/configmap
       volumes:
-        - name: usdfprod-idds-daemon-logs
+        - name: usdfprod-daemon-logs
           persistentVolumeClaim:
-            claimName: usdfprod-idds-daemon
-        - name: usdfprod-idds-daemon-configmap
-          secret:
-              secretName: idds-dev-secret-configmap
-        - name: usdfprod-idds-daemon-certs
-          secret:
-              secretName: idds-dev-secret-certs
+            claimName: usdfprod-daemon
+        - name: usdfprod-daemon-configmap
+          configMap:
+              name: usdfprod-rest-configmap
 ---
 # Source: idds/charts/postgres/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-idds-postgres
+  name: usdfprod-postgres
   labels:
     helm.sh/chart: postgres-0.1.0
     app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -408,12 +415,12 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: postgres
-      app.kubernetes.io/instance: usdfprod-idds
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: postgres
-        app.kubernetes.io/instance: usdfprod-idds
+        app.kubernetes.io/instance: usdfprod
     spec:
       serviceAccountName: default
       securityContext:
@@ -429,27 +436,27 @@ spec:
               containerPort: 5432
               protocol: TCP
           envFrom:
-            - secretRef:
-                name: idds-dev-secret-envs
+            - configMapRef:
+                name: usdfprod-postgres-idds-configmap
           resources:
             {}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: usdfprod-idds-postgres-data
+              name: usdfprod-postgres-data
       volumes:
-        - name: usdfprod-idds-postgres-data
+        - name: usdfprod-postgres-data
           persistentVolumeClaim:
-            claimName: usdfprod-idds-postgres
+            claimName: usdfprod-postgres
 ---
 # Source: idds/charts/rest/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-idds-rest
+  name: usdfprod-rest
   labels:
     helm.sh/chart: rest-0.1.0
     app.kubernetes.io/name: rest
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -457,14 +464,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: rest
-      app.kubernetes.io/instance: usdfprod-idds
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: rest
-        app.kubernetes.io/instance: usdfprod-idds
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-idds
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -487,36 +494,33 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: usdfprod-idds-rest-envs
-            - secretRef:
-                name: idds-dev-secret-envs
+                name: usdfprod-rest-envs
+            - configMapRef:
+                name: usdfprod-postgres-idds-configmap
           resources:
             {}
           volumeMounts:
-              - name: usdfprod-idds-rest-logs
+              - name: usdfprod-rest-logs
                 mountPath: /var/log/idds/
-              - name: usdfprod-idds-rest-configmap
+              - name: usdfprod-rest-configmap
                 mountPath: /opt/idds/configmap
       volumes:
-        - name: usdfprod-idds-rest-logs
+        - name: usdfprod-rest-logs
           persistentVolumeClaim:
-            claimName: usdfprod-idds-rest
-        - name: usdfprod-idds-rest-configmap
-          secret:
-              secretName: idds-dev-secret-configmap
-        - name: usdfprod-idds-rest-certs
-          secret:
-              secretName: idds-dev-secret-certs
+            claimName: usdfprod-rest
+        - name: usdfprod-rest-configmap
+          configMap:
+              name: usdfprod-rest-configmap
 ---
 # Source: idds/charts/rest/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: usdfprod-idds-rest
+  name: usdfprod-rest
   labels:
     helm.sh/chart: rest-0.1.0
     app.kubernetes.io/name: rest
-    app.kubernetes.io/instance: usdfprod-idds
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -550,17 +554,17 @@ metadata:
 spec:
   tls:
     - hosts:
-        - "idds-dev.slac.stanford.edu"
+        - "rubin-panda-idds.slac.stanford.edu"
       secretName: idds-dev-main-tlssan-cert
   rules:
-    - host: "idds-dev.slac.stanford.edu"
+    - host: "rubin-panda-idds.slac.stanford.edu"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: usdfprod-idds-rest
+                name: usdfprod-rest
                 port:
                   number: 8443
 ---

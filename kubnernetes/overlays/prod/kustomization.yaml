@@ -1,0 +1,17 @@
+namespace: panda
+
+resources:
+- ns.yaml
+# - cnpg-operator.yaml
+- cnpg-panda-database.yaml
+- server.yaml
+# - idds.yaml
+# - activemq.yaml
+# - bigmon.yaml
+# - harvester.yaml
+# - iam.yaml
+
+# remove items from helm which we don't need
+# patchesStrategicMerge:
+# - delete-pv.yaml
+# - pvc-patch.yaml

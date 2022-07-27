@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-server-jedi-configjson
+  name: usdfprod-jedi-configjson
 data:
   panda_jedi_config.json: |-
     {
@@ -33,7 +33,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-server-jedi-sandbox
+  name: usdfprod-jedi-sandbox
 binaryData:
   init-jedi: |-
     IyBpbnN0YWxsIENBIGZpbGVzCi9vcHQvcGFuZGEvYmluL3BhbmRhX2NvbW1vbi1pbnN0YWxsX2lndGZfY2EgPiAvdmFyL2xvZy9wYW5kYS9pbnN0YWxsX2lndGZfY2EubG9nIDI+JjEKCiMgY29weSBpZGRzIGNvbmYKbWtkaXIgLXAgL2hvbWUvYXRscGFuLy5pZGRzCmNwIC9kYXRhL3BhbmRhL2lkZHMuY2ZnIC9ob21lL2F0bHBhbi8uaWRkcy9pZGRzX2xvY2FsLmNmZwoKIyBmZXRjaCBpbmZvIGZyb20gQ1JJQyBiZWZvcmUgcnVubmluZyBzZXJ2aWNlcwp0bXBFeGU9L2RhdGEvcGFuZGEvaW5pdC1qZWRpLXRtcC1leGUKY2F0IDw8RU9UID4+ICR7dG1wRXhlfQovb3B0L3BhbmRhL3Vzci9iaW4vcGFuZGFfc2VydmVyLXNjaGVkY29uZmlnX2pzb24KL29wdC9wYW5kYS91c3IvYmluL3BhbmRhX3NlcnZlci1jb25maWd1cmF0b3IKRU9UCmNobW9kICt4ICR7dG1wRXhlfQoKaWYgW1sgLXogIiR7UEFOREFfTk9fUk9PVH0iIF1dOyB0aGVuCiAgcnVudXNlciAtdSBhdGxwYW4gLWcgenAgLS0gJHt0bXBFeGV9CmVsc2UKICAke3RtcEV4ZX0KZmkK
@@ -45,22 +45,6 @@ binaryData:
     ewogICAgIm1iX3NlcnZlcnMiOiB7CiAgICAgICAgImlERFNfbWIiOiB7CiAgICAgICAgICAgICJob3N0X3BvcnRfbGlzdCI6IFsiJHtQQU5EQV9BQ1RJVkVNUV9MSVNUfSJdLAogICAgICAgICAgICAidXNlX3NzbCI6IGZhbHNlLAogICAgICAgICAgICAiY2VydF9maWxlIjogbnVsbCwKICAgICAgICAgICAgImtleV9maWxlIjogbnVsbCwKICAgICAgICAgICAgInVzZXJuYW1lIjogInBhbmRhIiwKICAgICAgICAgICAgInBhc3Njb2RlIjogIiR7UEFOREFfQUNUSVZFTVFfUEFTU1dEX3BhbmRhfSIsCiAgICAgICAgICAgICJ2ZXJib3NlIjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgInBhbmRhX21iIjogewogICAgICAgICAgICAiaG9zdF9wb3J0X2xpc3QiOiBbIiR7UEFOREFfQUNUSVZFTVFfTElTVH0iXSwKICAgICAgICAgICAgInVzZV9zc2wiOiBmYWxzZSwKICAgICAgICAgICAgImNlcnRfZmlsZSI6IG51bGwsCiAgICAgICAgICAgICJrZXlfZmlsZSI6IG51bGwsCiAgICAgICAgICAgICJ1c2VybmFtZSI6ICJwYW5kYSIsCiAgICAgICAgICAgICJwYXNzY29kZSI6ICIke1BBTkRBX0FDVElWRU1RX1BBU1NXRF9wYW5kYX0iLAogICAgICAgICAgICAidmVyYm9zZSI6IHRydWUKICAgICAgICB9CiAgICB9LAogICAgInF1ZXVlcyI6IHsKICAgICAgICAicGFuZGFfam9ic3RhdHVzIjogewogICAgICAgICAgICAic2VydmVyIjogImlERFNfbWIiLAogICAgICAgICAgICAiZGVzdGluYXRpb24iOiAiL3RvcGljL3BhbmRhX2lkZHMiCiAgICAgICAgfSwKICAgICAgICAicGFuZGFfamVkaSI6IHsKICAgICAgICAgICAgInNlcnZlciI6ICJwYW5kYV9tYiIsCiAgICAgICAgICAgICJkZXN0aW5hdGlvbiI6ICIvcXVldWUvcGFuZGFfamVkaSIKICAgICAgICB9LAogICAgICAgICJwYW5kYV9waWxvdCI6IHsKICAgICAgICAgICAgInNlcnZlciI6ICJwYW5kYV9tYiIsCiAgICAgICAgICAgICJkZXN0aW5hdGlvbiI6ICIvcXVldWUvcGFuZGFfcGlsb3QiCiAgICAgICAgfQogICAgfQp9
   run-jedi-crons: |-
     IyByZWZyZXNoIENBIGZpbGVzCndoaWxlIHRydWU7IGRvIHNsZWVwIDM2MDAwOyAvb3B0L3BhbmRhL2Jpbi9wYW5kYV9jb21tb24taW5zdGFsbF9pZ3RmX2NhID4gL3Zhci9sb2cvcGFuZGEvaW5zdGFsbF9pZ3RmX2NhLmxvZyAyPiYxOyBkb25lICYK
----
-# Source: panda/charts/postgres/templates/configmap.yaml
-# config map
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: usdfprod-server-postgres-configmap
-  labels:
-    helm.sh/chart: postgres-0.1.0
-    app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-server
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-data:
-  PANDA_DB_PASSWORD: PwJdJWr7vY
-  PANDA_DB_HOST: usdfprod-server-postgres
 ---
 # Source: panda/charts/server/templates/configmap.yaml
 # server configuration json
@@ -149,7 +133,7 @@ binaryData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-server-external-sandbox
+  name: usdfprod-external-sandbox
 binaryData:
   .gitkeep: |-
     
@@ -167,7 +151,7 @@ binaryData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-server-external-env
+  name: usdfprod-external-env
 data:
   # ActiveMQ
   PANDA_ACTIVEMQ_LIST: "activemq-dev:61613"
@@ -191,32 +175,11 @@ data:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-server-jedi
+  name: usdfprod-jedi
   labels:
     helm.sh/chart: jedi-0.1.0
     app.kubernetes.io/name: jedi
-    app.kubernetes.io/instance: usdfprod-server
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-spec:
-  storageClassName: wekafs--sdf-k8s01
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
----
-# Source: panda/charts/postgres/templates/deployment.yaml
-# pv
-# pv claim
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: usdfprod-server-postgres
-  labels:
-    helm.sh/chart: postgres-0.1.0
-    app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -237,7 +200,7 @@ metadata:
   labels:
     helm.sh/chart: server-0.1.0
     app.kubernetes.io/name: server
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -248,28 +211,6 @@ spec:
     requests:
       storage: 5Gi
 ---
-# Source: panda/charts/postgres/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: usdfprod-server-postgres
-  labels:
-    helm.sh/chart: postgres-0.1.0
-    app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-server
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-spec:
-  type: ClusterIP
-  ports:
-    - port: 5432
-      targetPort: postgres-port
-      protocol: TCP
-      name: postgres-port
-  selector:
-    app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-server
----
 # Source: panda/charts/server/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -278,7 +219,7 @@ metadata:
   labels:
     helm.sh/chart: server-0.1.0
     app.kubernetes.io/name: server
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -294,17 +235,17 @@ spec:
       name: https
   selector:
     app.kubernetes.io/name: server
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: panda/charts/jedi/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-server-jedi
+  name: usdfprod-jedi
   labels:
     helm.sh/chart: jedi-0.1.0
     app.kubernetes.io/name: jedi
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -312,14 +253,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: jedi
-      app.kubernetes.io/instance: usdfprod-server
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: jedi
-        app.kubernetes.io/instance: usdfprod-server
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-server
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -346,86 +287,37 @@ spec:
           resources:
             {}
           volumeMounts:
-              - name: usdfprod-server-jedi-logs
+              - name: usdfprod-jedi-logs
                 mountPath: /var/log/panda
-              - name: usdfprod-server-jedi-configjson
+              - name: usdfprod-jedi-configjson
                 mountPath: /opt/panda/etc/config_json
-              - name: usdfprod-server-jedi-sandbox
+              - name: usdfprod-jedi-sandbox
                 mountPath: /opt/panda/sandbox
           envFrom:
             - configMapRef:
-                name: usdfprod-server-external-env
+                name: usdfprod-external-env
             - configMapRef:
-                name: usdfprod-server-server-env
+                name: usdfprod-server-env
             - secretRef:
                 name: panda-dev-secret-envs
       volumes:
-        - name: usdfprod-server-jedi-logs
+        - name: usdfprod-jedi-logs
           persistentVolumeClaim:
-            claimName: usdfprod-server-jedi
-        - name: usdfprod-server-jedi-sandbox
+            claimName: usdfprod-jedi
+        - name: usdfprod-jedi-sandbox
           projected:
             sources:
               - configMap:
-                  name: usdfprod-server-jedi-sandbox
+                  name: usdfprod-jedi-sandbox
               - configMap:
-                  name: usdfprod-server-external-sandbox
-        - name: usdfprod-server-jedi-configjson
+                  name: usdfprod-external-sandbox
+        - name: usdfprod-jedi-configjson
           projected:
             sources:
               - configMap:
-                  name: usdfprod-server-jedi-configjson
+                  name: usdfprod-jedi-configjson
               - configMap:
-                  name: usdfprod-server-server-configjson
----
-# Source: panda/charts/postgres/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: usdfprod-server-postgres
-  labels:
-    helm.sh/chart: postgres-0.1.0
-    app.kubernetes.io/name: postgres
-    app.kubernetes.io/instance: usdfprod-server
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: postgres
-      app.kubernetes.io/instance: usdfprod-server
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: postgres
-        app.kubernetes.io/instance: usdfprod-server
-    spec:
-      serviceAccountName: default
-      securityContext:
-        {}
-      containers:
-        - name: postgres
-          securityContext:
-            {}
-          image: "ghcr.io/pandawms/panda-database:0.0.11"
-          imagePullPolicy: Always
-          ports:
-            - name: postgres-port
-              containerPort: 5432
-              protocol: TCP
-          envFrom:
-            - secretRef:
-                name: panda-dev-secret-envs
-          resources:
-            {}
-          volumeMounts:
-            - mountPath: /temp
-              name: usdfprod-server-postgres-data
-      volumes:
-        - name: usdfprod-server-postgres-data
-          persistentVolumeClaim:
-            claimName: usdfprod-server-postgres
+                  name: usdfprod-server-configjson
 ---
 # Source: panda/charts/server/templates/deployment.yaml
 apiVersion: apps/v1
@@ -435,7 +327,7 @@ metadata:
   labels:
     helm.sh/chart: server-0.1.0
     app.kubernetes.io/name: server
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -443,14 +335,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: server
-      app.kubernetes.io/instance: usdfprod-server
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: server
-        app.kubernetes.io/instance: usdfprod-server
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-server
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -522,7 +414,7 @@ spec:
               - configMap:
                   name: usdfprod-server-sandbox
               - configMap:
-                  name: usdfprod-server-external-sandbox
+                  name: usdfprod-external-sandbox
         - name: usdfprod-server-certs
           secret:
               secretName: panda-dev-secret-certs
@@ -535,7 +427,7 @@ metadata:
   labels:
     helm.sh/chart: server-0.1.0
     app.kubernetes.io/name: server
-    app.kubernetes.io/instance: usdfprod-server
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -545,10 +437,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - "panda-dev.slac.stanford.edu"
-      secretName: panda-k8s-dev-jedi-tls-cert
+        - "FIXME"
+      secretName: FIXME
   rules:
-    - host: "panda-dev.slac.stanford.edu"
+    - host: "rubin-panda-server.slac.stanford.edu"
       http:
         paths:
           - path: /

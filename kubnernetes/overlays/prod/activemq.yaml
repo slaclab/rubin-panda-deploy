@@ -18,6 +18,7 @@ kind: ConfigMap
 metadata:
   name: usdfprod-activemq-env
 data:
+  ACTIVEMQ_BASE_PASSWD: ITzqWRCd
   ACTIVEMQ_CHANNELS: iddspanda:idds:idds,panda,jedi;pandaidds:panda,jedi:idds;self.jedi_taskstatus:jedi:jedi;panda_jedi:panda:jedi;panda_pilot:panda:pilot;idds.internal:idds:idds
   ACTIVEMQ_ACCOUNTS: panda;jedi;idds;pilot
 ---
@@ -30,7 +31,7 @@ metadata:
   labels:
     helm.sh/chart: activemq-0.1.0
     app.kubernetes.io/name: activemq
-    app.kubernetes.io/instance: usdfprod-activemq
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -49,7 +50,7 @@ metadata:
   labels:
     helm.sh/chart: activemq-0.1.0
     app.kubernetes.io/name: activemq
-    app.kubernetes.io/instance: usdfprod-activemq
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -61,7 +62,7 @@ spec:
       name: activemq-port
   selector:
     app.kubernetes.io/name: activemq
-    app.kubernetes.io/instance: usdfprod-activemq
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: msgsvc/charts/activemq/templates/deployment.yaml
 apiVersion: apps/v1
@@ -71,7 +72,7 @@ metadata:
   labels:
     helm.sh/chart: activemq-0.1.0
     app.kubernetes.io/name: activemq
-    app.kubernetes.io/instance: usdfprod-activemq
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -79,12 +80,12 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: activemq
-      app.kubernetes.io/instance: usdfprod-activemq
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: activemq
-        app.kubernetes.io/instance: usdfprod-activemq
+        app.kubernetes.io/instance: usdfprod
     spec:
       serviceAccountName: default
       securityContext:
@@ -125,8 +126,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: usdfprod-activemq-env
-            - secretRef:
-                name: msgsvc-dev-secret-envs
       volumes:
         - name: usdfprod-activemq-data
           persistentVolumeClaim:

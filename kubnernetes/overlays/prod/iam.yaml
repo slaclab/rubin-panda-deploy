@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-iam-main-configmap
+  name: usdfprod-main-configmap
 data:
   application-oidc.yml: |-
     
@@ -322,17 +322,23 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-iam-main-envs
+  name: usdfprod-main-envs
   labels:
     helm.sh/chart: main-0.1.0
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
   # IAM_JAVA_OPTS: "-Dspring.profiles.active=prod,registration,oidc -Dspring.data.rest.basePath=/iam -Dserver.servlet.context-path=/iam -Dlog4j2.formatMsgNoLookups=true"
   IAM_JAVA_OPTS: "-Dspring.profiles.active=prod,registration,oidc -Dlog4j2.formatMsgNoLookups=true"
-  IAM_DB_HOST: usdfprod-iam-mariadb
+  IAM_DB_HOST: usdfprod-mariadb
+  IAM_DB_NAME: iam_Rubin_db
+  IAM_DB_USERNAME: iam
+  IAM_DB_PASSWORD: MyPandaPass0508
+
+  IAM_CILOGON_CLIENT_ID: FIXME
+  IAM_CILOGON_CLIENT_SECRET: FIXME
 
   IAM_PORT: "8080"
 
@@ -363,11 +369,11 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-iam-mariadb-configmap
+  name: usdfprod-mariadb-configmap
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -381,7 +387,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: usdfprod-iam-mariadb-initdb
+  name: usdfprod-mariadb-initdb
 data:
   init_org_db.sql: |-
     CREATE DATABASE iam_Rubin_db CHARACTER SET latin1 COLLATE latin1_swedish_ci;
@@ -392,11 +398,11 @@ data:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-iam-main
+  name: usdfprod-main
   labels:
     helm.sh/chart: main-0.1.0
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -412,11 +418,11 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: usdfprod-iam-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -431,11 +437,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: usdfprod-iam-main
+  name: usdfprod-main
   labels:
     helm.sh/chart: main-0.1.0
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -447,17 +453,17 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: iam/charts/mariadb/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: usdfprod-iam-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -469,17 +475,17 @@ spec:
       name: mariadb-port
   selector:
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
 ---
 # Source: iam/charts/main/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-iam-main
+  name: usdfprod-main
   labels:
     helm.sh/chart: main-0.1.0
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -487,14 +493,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: main
-      app.kubernetes.io/instance: usdfprod-iam
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: main
-        app.kubernetes.io/instance: usdfprod-iam
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-iam
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -510,28 +516,26 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: usdfprod-iam-main-envs
-            - secretRef:
-                name: iam-dev-secret-iam-envs
+                name: usdfprod-main-envs
           resources:
             {}
           volumeMounts:
-              - name: usdfprod-iam-main-configmap
+              - name: usdfprod-main-configmap
                 mountPath: /indigo-iam/config/
       volumes:
-        - name: usdfprod-iam-main-configmap
+        - name: usdfprod-main-configmap
           configMap:
-            name: usdfprod-iam-main-configmap
+            name: usdfprod-main-configmap
 ---
 # Source: iam/charts/mariadb/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: usdfprod-iam-mariadb
+  name: usdfprod-mariadb
   labels:
     helm.sh/chart: mariadb-0.1.0
     app.kubernetes.io/name: mariadb
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -539,14 +543,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: mariadb
-      app.kubernetes.io/instance: usdfprod-iam
+      app.kubernetes.io/instance: usdfprod
   template:
     metadata:
       labels:
         app.kubernetes.io/name: mariadb
-        app.kubernetes.io/instance: usdfprod-iam
+        app.kubernetes.io/instance: usdfprod
     spec:
-      hostname:  usdfprod-iam
+      hostname:  usdfprod
       serviceAccountName: default
       securityContext:
         {}
@@ -561,32 +565,32 @@ spec:
               containerPort: 3306
               protocol: TCP
           envFrom:
-            - secretRef:
-                name: iam-dev-secret-db-envs
+            - configMapRef:
+                name: usdfprod-mariadb-configmap
           resources:
             {}
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: usdfprod-iam-mariadb-data
+              name: usdfprod-mariadb-data
             - mountPath: /docker-entrypoint-initdb.d/
-              name: usdfprod-iam-mariadb-initdb
+              name: usdfprod-mariadb-initdb
       volumes:
-        - name: usdfprod-iam-mariadb-data
+        - name: usdfprod-mariadb-data
           persistentVolumeClaim:
-            claimName: usdfprod-iam-mariadb
-        - name: usdfprod-iam-mariadb-initdb
-          secret:
-              secretName: iam-dev-secret-initdb
+            claimName: usdfprod-mariadb
+        - name: usdfprod-mariadb-initdb
+          configMap:
+            name: usdfprod-mariadb-initdb
 ---
 # Source: iam/charts/main/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: usdfprod-iam-main
+  name: usdfprod-main
   labels:
     helm.sh/chart: main-0.1.0
     app.kubernetes.io/name: main
-    app.kubernetes.io/instance: usdfprod-iam
+    app.kubernetes.io/instance: usdfprod
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -630,6 +634,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: usdfprod-iam-main
+                name: usdfprod-main
                 port:
                   number: 443

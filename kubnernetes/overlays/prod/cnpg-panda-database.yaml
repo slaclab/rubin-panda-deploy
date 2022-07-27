@@ -1,0 +1,87 @@
+kind: Cluster
+metadata:
+  name: rubin-panda
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  bootstrap:
+    initdb:
+      database: doma_panda
+      owner: panda
+      secret:
+        name: panda-db-creds
+
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+
+  postgresql:
+    parameters:
+      # shared_buffers: 16GB
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+
+
+  resources:
+    requests:
+      memory: 4Gi
+      cpu: 2
+    limits:
+      memory: 8Gi
+      cpu: 4
+
+  storage:
+    storageClass: wekafs--sdf-k8s01
+    size: 10Gi
+
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: rubin-panda-pooler-rw
+spec:
+  cluster:
+    name: rubin-panda
+  instances: 1
+  type: rw
+
+  pgbouncer:
+    poolMode: transaction
+    parameters:
+      max_client_conn: "1000"
+      default_pool_size: "10"
+      log_connections: "1"
+      log_disconnections: "1"
+      idle_transaction_timeout: "0"
+      server_idle_timeout: "0"
+
+  template:
+    metadata:
+      labels:
+        app: pooler
+
+    spec:
+
+      containers:
+      - name: pgbouncer
+        #image: my-pgbouncer:latest
+        resources:
+          requests:
+            cpu: "0.1"
+            memory: 100Mi
+          limits:
+            cpu: "0.5"
+            memory: 500Mi
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - pooler
+            topologyKey: "kubernetes.io/hostname"
